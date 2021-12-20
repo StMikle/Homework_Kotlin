@@ -8,16 +8,23 @@ import com.example.kotlin.course.calculator.mathCommand.TimesCommand
 import java.math.BigDecimal
 
 class Calculator {
-    val commands = mutableMapOf<String, Command?>("*" to TimesCommand(), "/" to DivideCommand(),
-        "+" to PlusCommand(), "-" to MinusCommand())
+    private val commands = mutableMapOf<String, Command?>(
+        "*" to TimesCommand(), "/" to DivideCommand(),
+        "+" to PlusCommand(), "-" to MinusCommand()
+    )
 
-    val operators = commands.map{ it.key }
+    val operators: List<String>
+        get() = commands.map { it.key }
 
-    fun addCommand(sign: String, command: Command?) {
-        commands[sign] = command
+    fun addCommand(operator: String, command: Command?) {
+        commands[operator] = command
     }
 
-    fun executeCommand(command: Command?, value1: BigDecimal, value2: BigDecimal): BigDecimal? {
-        return command?.execute(value1, value2)
+    private fun findOperator(operator: String) : Command? {
+        return commands[operator]
+    }
+
+    fun executeCommand(operator: String, value1: BigDecimal, value2: BigDecimal): BigDecimal? {
+        return findOperator(operator)?.execute(value1, value2)
     }
 }
